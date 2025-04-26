@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { isAuthenticated } from './services/auth';
 
-// Componentes de páginas
+// Correct component imports
 import Login from './components/auth/Login';
 import Dashboard from './components/dashboard/Dashboard';
 import PrinterDetails from './components/monitoring/PrinterDetails';

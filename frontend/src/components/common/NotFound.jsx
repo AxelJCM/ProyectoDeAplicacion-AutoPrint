@@ -3,28 +3,36 @@ import { Link } from 'react-router-dom';
 
 const NotFound = () => {
   return (
-    <div className="min-h-screen flex flex-col justify-center items-center bg-gray-100 px-4">
-      <div className="text-center">
-        <h1 className="text-9xl font-bold text-blue-600">404</h1>
-        <h2 className="text-6xl font-medium py-8">Página no encontrada</h2>
-        <p className="text-2xl pb-8 px-12 font-medium">La página que estás buscando no existe o ha sido movida.</p>
-        <Link
-          to="/"
-          className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-md shadow-md transition duration-300"
-        >
-          Volver al Inicio
-        </Link>
-      </div>
-      
-      <div className="mt-12">
-        <svg 
-          className="w-64 h-64 text-blue-600 opacity-20" 
-          xmlns="http://www.w3.org/2000/svg" 
-          viewBox="0 0 24 24" 
-          fill="currentColor"
-        >
-          <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-2a8 8 0 1 0 0-16 8 8 0 0 0 0 16zm-1-5h2v2h-2v-2zm0-8h2v6h-2V7z"/>
-        </svg>
+    <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+        <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10 text-center">
+          <svg 
+            className="mx-auto h-12 w-12 text-gray-400"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+          </svg>
+          <h1 className="mt-4 text-3xl font-extrabold text-gray-900">404</h1>
+          <p className="mt-2 text-base text-gray-500">Página no encontrada</p>
+          <p className="mt-1 text-sm text-gray-500">La página que estás buscando no existe o ha sido movida.</p>
+          
+          <div className="mt-6">
+            <Link 
+              to="/dashboard"
+              className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+            >
+              Volver al Dashboard
+            </Link>
+          </div>
+        </div>
       </div>
     </div>
   );

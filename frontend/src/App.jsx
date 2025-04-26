@@ -1,7 +1,7 @@
 import React from 'react';
+import './App.css';
 import AppRoutes from './routes';
 import { AuthProvider } from './components/auth/AuthContext';
-import './App.css';
 
 function App() {
   return (

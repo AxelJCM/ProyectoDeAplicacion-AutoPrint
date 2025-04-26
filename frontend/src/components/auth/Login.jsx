@@ -1,6 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { login } from '../../services/auth';
+
+// Hardcoded credentials for demo
+const DEMO_CREDENTIALS = {
+  email: "admin@autoprint.com",
+  password: "admin123"
+};
 
 const Login = () => {
   const [credentials, setCredentials] = useState({
@@ -10,6 +15,13 @@ const Login = () => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  
+  // Check if user is already logged in
+  useEffect(() => {
+    if (localStorage.getItem('token')) {
+      navigate('/dashboard');
+    }
+  }, [navigate]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -21,35 +33,56 @@ const Login = () => {
     setError('');
     setLoading(true);
 
-    try {
-      const success = await login(credentials);
-      if (success) {
+    // Simulate API delay
+    setTimeout(() => {
+      // Check against demo credentials
+      if (credentials.email === DEMO_CREDENTIALS.email && 
+          credentials.password === DEMO_CREDENTIALS.password) {
+        
+        // Store mock token and user data
+        localStorage.setItem('token', 'demo-jwt-token-123456789');
+        localStorage.setItem('user', JSON.stringify({
+          id: 1,
+          name: 'Administrador',
+          email: DEMO_CREDENTIALS.email,
+          role: 'admin'
+        }));
+        
         navigate('/dashboard');
       } else {
-        setError('Credenciales inválidas');
+        setError('Credenciales inválidas. Use admin@autoprint.com / admin123');
       }
-    } catch (err) {
-      console.error('Login error:', err);
-      setError(err.response?.data?.message || 'Ocurrió un error al iniciar sesión');
-    } finally {
       setLoading(false);
-    }
+    }, 800); // Simulate network delay
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-lg shadow-md">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-500 to-blue-700 py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-lg shadow-2xl transform transition-all duration-500 hover:shadow-2xl">
         <div>
+          {/* Logo Placeholder */}
+          <div className="mx-auto h-16 w-16 bg-blue-600 rounded-full flex items-center justify-center shadow-md">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+            </svg>
+          </div>
           <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
             AutoPrint
           </h2>
           <p className="mt-2 text-center text-sm text-gray-600">
             Sistema de Monitoreo para Impresoras 3D
           </p>
+          
+          {/* Demo credentials helper */}
+          <div className="mt-3 text-center text-xs text-gray-500 bg-gray-50 p-2 rounded-md">
+            <p>Usar credenciales de demostración:</p>
+            <p className="font-mono">Email: admin@autoprint.com</p>
+            <p className="font-mono">Password: admin123</p>
+          </div>
         </div>
         
         {error && (
-          <div className="rounded-md bg-red-50 p-4">
+          <div className="rounded-md bg-red-50 p-4 animate-pulse">
             <div className="flex">
               <div className="flex-shrink-0">
                 <svg className="h-5 w-5 text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -77,7 +110,7 @@ const Login = () => {
                 required
                 value={credentials.email}
                 onChange={handleChange}
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
+                className="appearance-none rounded-none relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
                 placeholder="Correo Electrónico"
               />
             </div>
@@ -91,7 +124,7 @@ const Login = () => {
                 required
                 value={credentials.password}
                 onChange={handleChange}
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
+                className="appearance-none rounded-none relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
                 placeholder="Contraseña"
               />
             </div>
@@ -111,7 +144,7 @@ const Login = () => {
             </div>
 
             <div className="text-sm">
-              <a href="#" className="font-medium text-blue-600 hover:text-blue-500">
+              <a href="#" className="font-medium text-blue-600 hover:text-blue-500 transition-colors">
                 ¿Olvidó su contraseña?
               </a>
             </div>
@@ -121,7 +154,7 @@ const Login = () => {
             <button
               type="submit"
               disabled={loading}
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:bg-blue-300"
+              className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:bg-blue-300 transition-colors duration-200"
             >
               {loading ? (
                 <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -139,6 +172,10 @@ const Login = () => {
             </button>
           </div>
         </form>
+        
+        <div className="mt-6 text-center text-xs text-gray-500">
+          © {new Date().getFullYear()} AutoPrint Technology. Todos los derechos reservados.
+        </div>
       </div>
     </div>
   );
