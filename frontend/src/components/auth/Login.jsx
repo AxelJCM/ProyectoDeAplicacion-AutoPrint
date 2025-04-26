@@ -57,28 +57,21 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-500 to-blue-700 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-lg shadow-2xl transform transition-all duration-500 hover:shadow-2xl">
-        <div>
-          {/* Logo Placeholder */}
-          <div className="mx-auto h-16 w-16 bg-blue-600 rounded-full flex items-center justify-center shadow-md">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-500 to-blue-700">
+      <div className="max-w-md w-full bg-white p-8 rounded-lg shadow-lg">
+        <div className="flex flex-col items-center">
+          <div className="h-12 w-12 bg-blue-600 rounded-full flex items-center justify-center mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
             </svg>
           </div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            AutoPrint
-          </h2>
-          <p className="mt-2 text-center text-sm text-gray-600">
-            Sistema de Monitoreo para Impresoras 3D
-          </p>
-          
-          {/* Demo credentials helper */}
-          <div className="mt-3 text-center text-xs text-gray-500 bg-gray-50 p-2 rounded-md">
-            <p>Usar credenciales de demostración:</p>
-            <p className="font-mono">Email: admin@autoprint.com</p>
-            <p className="font-mono">Password: admin123</p>
-          </div>
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">AutoPrint</h2>
+          <p className="text-sm text-gray-500 mb-4">Sistema de Monitoreo para Impresoras 3D</p>
+        </div>
+        <div className="mt-3 text-center text-xs text-gray-500 bg-gray-50 p-2 rounded-md">
+          <p>Usar credenciales de demostración:</p>
+          <p className="font-mono">Email: admin@autoprint.com</p>
+          <p className="font-mono">Password: admin123</p>
         </div>
         
         {error && (
@@ -144,9 +137,13 @@ const Login = () => {
             </div>
 
             <div className="text-sm">
-              <a href="#" className="font-medium text-blue-600 hover:text-blue-500 transition-colors">
+              <button
+                type="button"
+                className="font-medium text-blue-600 hover:text-blue-500 transition-colors underline"
+                onClick={() => alert('Funcionalidad no implementada')}
+              >
                 ¿Olvidó su contraseña?
-              </a>
+              </button>
             </div>
           </div>
 
