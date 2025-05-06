@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { fetchConnectedPrinters } from '../../services/api';
 import { formatDate, formatPrinterStatus } from '../../utils/formatters';
 
-// Add this near the top of Dashboard.jsx
 const MOCK_PRINTERS = [
   {
     id: 'printer1',
@@ -11,7 +10,10 @@ const MOCK_PRINTERS = [
     status: 'active',
     temperature: { bed: 60, nozzle: 210 },
     humidity: 45,
-    alerts: []
+    alerts: [],
+    location: 'Laboratorio 1',
+    model: 'Model X',
+    lastUpdate: new Date().toISOString(),
   },
   {
     id: 'printer2',
@@ -19,7 +21,10 @@ const MOCK_PRINTERS = [
     status: 'active',
     temperature: { bed: 55, nozzle: 195 },
     humidity: 40,
-    alerts: [{ type: 'warning', message: 'Filamento bajo' }]
+    alerts: [{ type: 'warning', message: 'Filamento bajo' }],
+    location: 'Laboratorio 2',
+    model: 'Model Y',
+    lastUpdate: new Date().toISOString(),
   }
 ];
 
@@ -42,23 +47,21 @@ const Dashboard = () => {
           data = MOCK_PRINTERS;
         }
         setPrinters(data);
-        // Calculate stats...
       } finally {
         setLoading(false);
       }
     };
-    
     loadPrinters();
   }, []);
 
   // Filtrar impresoras según búsqueda y filtro de estado
   const filteredPrinters = printers.filter(printer => {
-    const matchesQuery = 
+    const matchesQuery =
       printer.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      printer.location.toLowerCase().includes(searchQuery.toLowerCase());
-    
+      (printer.location && printer.location.toLowerCase().includes(searchQuery.toLowerCase()));
+
     const matchesStatus = statusFilter === 'all' || printer.status === statusFilter;
-    
+
     return matchesQuery && matchesStatus;
   });
 
@@ -82,7 +85,7 @@ const Dashboard = () => {
         </div>
       ) : printers.length === 0 ? (
         <div className="text-center py-12">
-          <svg className="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="mx-auto h-8 w-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 005.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
           <h3 className="mt-2 text-sm font-medium text-gray-900">No hay impresoras</h3>
@@ -161,7 +164,7 @@ const Dashboard = () => {
             </div>
           ) : filteredPrinters.length === 0 ? (
             <div className="bg-white shadow overflow-hidden sm:rounded-lg p-6 text-center">
-              <svg className="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg className="mx-auto h-8 w-8 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
               </svg>
               <h3 className="mt-2 text-sm font-medium text-gray-900">No se encontraron impresoras</h3>
@@ -180,7 +183,7 @@ const Dashboard = () => {
                   <div className="px-4 py-5 sm:p-6">
                     <div className="flex items-center justify-between">
                       <div className="flex-shrink-0 mr-4">
-                        <svg className="h-12 w-12 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg className="h-8 w-8 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
                         </svg>
                       </div>
@@ -204,11 +207,15 @@ const Dashboard = () => {
                     <div className="mt-6 grid grid-cols-2 gap-4">
                       <div>
                         <dt className="text-sm font-medium text-gray-500">Temperatura</dt>
-                        <dd className="mt-1 text-lg font-semibold text-gray-900">{printer.temperature ? `${printer.temperature}°C` : 'N/A'}</dd>
+                        <dd className="mt-1 text-lg font-semibold text-gray-900">
+                          {printer.temperature ? `${printer.temperature.nozzle}°C` : 'N/A'}
+                        </dd>
                       </div>
                       <div>
                         <dt className="text-sm font-medium text-gray-500">Humedad</dt>
-                        <dd className="mt-1 text-lg font-semibold text-gray-900">{printer.humidity ? `${printer.humidity}%` : 'N/A'}</dd>
+                        <dd className="mt-1 text-lg font-semibold text-gray-900">
+                          {printer.humidity ? `${printer.humidity}%` : 'N/A'}
+                        </dd>
                       </div>
                     </div>
                     

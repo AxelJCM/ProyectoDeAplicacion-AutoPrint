@@ -35,7 +35,7 @@ const Sidebar = () => {
   ];
 
   return (
-    <div className="h-full flex flex-col bg-white">
+    <aside className="h-full flex flex-col bg-white w-56 border-r">
       {/* Logo */}
       <div className="flex items-center h-16 px-4 border-b border-gray-200">
         <svg className="h-6 w-6 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -45,25 +45,23 @@ const Sidebar = () => {
       </div>
       
       {/* Navigation */}
-      <div className="flex-1 flex flex-col overflow-y-auto">
-        <nav className="flex-1 px-2 py-4 space-y-1">
-          {navItems.map((item) => (
-            <NavLink
-              key={item.path}
-              to={item.path}
-              className={({ isActive }) => 
-                isActive
-                  ? "bg-blue-50 text-blue-600 group flex items-center px-2 py-2 text-sm font-medium rounded-md"
-                  : "text-gray-600 hover:bg-gray-100 group flex items-center px-2 py-2 text-sm font-medium rounded-md"
-              }
-            >
-              <div className="mr-3">{item.icon}</div>
-              {item.name}
-            </NavLink>
-          ))}
-        </nav>
-      </div>
-    </div>
+      <nav className="flex-1 px-2 py-4 space-y-1">
+        {navItems.map((item) => (
+          <NavLink
+            key={item.path}
+            to={item.path}
+            className={({ isActive }) => 
+              isActive
+                ? "bg-blue-50 text-blue-600 flex items-center px-3 py-2 text-sm font-medium rounded-md"
+                : "text-gray-600 hover:bg-gray-100 flex items-center px-3 py-2 text-sm font-medium rounded-md"
+            }
+          >
+            <span className="mr-2 flex-shrink-0">{item.icon}</span>
+            <span>{item.name}</span>
+          </NavLink>
+        ))}
+      </nav>
+    </aside>
   );
 };
 
